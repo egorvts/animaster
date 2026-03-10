@@ -4,20 +4,30 @@ function addListeners() {
     let heartBeatingHandler;
     let resetHandler;
 
+    const worryAnimationHandler = animaster()
+        .addMove(200, { x: 80, y: 0 })
+        .addMove(200, { x: 0, y: 0 })
+        .addMove(200, { x: 80, y: 0 })
+        .addMove(200, { x: 0, y: 0 })
+        .buildHandler();
+
+    document
+        .getElementById("worryAnimationBlock")
+        .addEventListener("click", worryAnimationHandler);
+
     document
         .getElementById("customAnimationPlay")
         .addEventListener("click", function () {
             const block = document.getElementById("customAnimationBlock");
             const customAnimation = animaster()
-                .addMove(200, {x: 40, y: 40})
+                .addMove(200, { x: 40, y: 40 })
                 .addScale(800, 1.3)
-                .addMove(200, {x: 80, y: 0})
+                .addMove(200, { x: 80, y: 0 })
                 .addScale(800, 1)
-                .addMove(200, {x: 40, y: -40})
+                .addMove(200, { x: 40, y: -40 })
                 .addScale(800, 0.7)
-                .addMove(200, {x: 0, y: 0})
+                .addMove(200, { x: 0, y: 0 })
                 .addScale(800, 1);
-            console.log(customAnimation._steps);
             customAnimation.play(block);
         });
 
@@ -37,7 +47,7 @@ function addListeners() {
 
     document.getElementById("movePlay").addEventListener("click", function () {
         const block = document.getElementById("moveBlock");
-        animaster().addMove(1000, {x: 100, y: 10}).play(block);
+        animaster().addMove(1000, { x: 100, y: 10 }).play(block);
     });
 
     document.getElementById("scalePlay").addEventListener("click", function () {
@@ -49,9 +59,10 @@ function addListeners() {
         .getElementById("moveAndHidePlay")
         .addEventListener("click", function () {
             const block = document.getElementById("moveAndHideBlock");
-            resetHandler = animaster().addMove(1000 * 2 / 5, {x: 100, y: 20})
-                .addDelay(1000 * 2 / 5)
-                .addFadeOut(1000 * 3 / 5)
+            resetHandler = animaster()
+                .addMove((1000 * 2) / 5, { x: 100, y: 20 })
+                .addDelay((1000 * 2) / 5)
+                .addFadeOut((1000 * 3) / 5)
                 .play(block);
         });
 
@@ -66,7 +77,8 @@ function addListeners() {
         .getElementById("showAndHidePlay")
         .addEventListener("click", function () {
             const block = document.getElementById("showAndHideBlock");
-            animaster().addFadeIn(1000 / 3)
+            animaster()
+                .addFadeIn(1000 / 3)
                 .addDelay(1000 / 3)
                 .addFadeOut(1000 / 3)
                 .play(block);
@@ -76,7 +88,8 @@ function addListeners() {
         .getElementById("heartBeatingPlay")
         .addEventListener("click", function () {
             const block = document.getElementById("heartBeatingBlock");
-            heartBeatingHandler = animaster().addScale(500, 1.4)
+            heartBeatingHandler = animaster()
+                .addScale(500, 1.4)
                 .addDelay(500)
                 .addScale(500, 1)
                 .play(block, true);
@@ -147,7 +160,7 @@ function animaster() {
     }
 
     function moveAndHide(element, duration) {
-        move(element, (duration * 2) / 5, {x: 100, y: 20});
+        move(element, (duration * 2) / 5, { x: 100, y: 20 });
         setTimeout(
             () => {
                 fadeOut(element, (duration * 3) / 5);
@@ -261,13 +274,20 @@ function animaster() {
 
         return {
             stop: () => {
-                this.isPlaying = false
+                this.isPlaying = false;
             },
             reset: () => {
                 this.isPlaying = false;
                 resetMoveAndScale(element);
                 resetFadeOut(element);
-            }
+            },
+        };
+    }
+
+    function buildHandler() {
+        const self = this;
+        return function () {
+            self.play(this);
         };
     }
 
@@ -288,6 +308,7 @@ function animaster() {
         resetMoveAndHide,
         showAndHide,
         heartBeating,
+        buildHandler,
     };
 }
 
