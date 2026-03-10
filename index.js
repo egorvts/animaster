@@ -19,7 +19,7 @@ function addListeners() {
 
     document.getElementById("movePlay").addEventListener("click", function () {
         const block = document.getElementById("moveBlock");
-        animaster().move(block, 1000, { x: 100, y: 10 });
+        animaster().addMove(1000, {x: 100, y: 10}).play(block);
     });
 
     document.getElementById("scalePlay").addEventListener("click", function () {
@@ -120,7 +120,7 @@ function animaster() {
     }
 
     function moveAndHide(element, duration) {
-        move(element, (duration * 2) / 5, { x: 100, y: 20 });
+        move(element, (duration * 2) / 5, {x: 100, y: 20});
         setTimeout(
             () => {
                 fadeOut(element, (duration * 3) / 5);
@@ -158,7 +158,32 @@ function animaster() {
         };
     }
 
+    function addMove(duration, translation) {
+        this._steps.push({
+            name: "move",
+            duration,
+            translation,
+        });
+
+        return this;
+    }
+
+    function play(element) {
+        let delay = 0;
+        for (const step of this._steps) {
+            setTimeout(() => {
+                if (step.name === 'move'){
+                    move(element, step.duration, step.translation);
+                }
+            })
+            delay += step.duration;
+        }
+    }
+
     return {
+        _steps: [],
+        play,
+        addMove,
         fadeIn,
         fadeOut,
         move,
