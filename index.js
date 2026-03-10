@@ -35,6 +35,13 @@ function addListeners() {
         });
 
     document
+        .getElementById("moveAndHideReset")
+        .addEventListener("click", function () {
+            const block = document.getElementById("moveAndHideBlock");
+            animaster().resetMoveAndHide(block);
+        });
+
+    document
         .getElementById("showAndHidePlay")
         .addEventListener("click", function () {
             const block = document.getElementById("showAndHideBlock");
@@ -121,6 +128,12 @@ function animaster() {
             (duration * 2) / 5,
         );
     }
+
+    function resetMoveAndHide(element) {
+        resetMoveAndScale(element);
+        resetFadeOut(element);
+    }
+
     function showAndHide(element, duration) {
         fadeIn(element, (duration * 1) / 3);
         setTimeout(
@@ -151,6 +164,7 @@ function animaster() {
         move,
         scale,
         moveAndHide,
+        resetMoveAndHide,
         showAndHide,
         heartBeating,
     };
