@@ -73,6 +73,23 @@ function animaster() {
         element.classList.add("hide");
     }
 
+    function resetFadeIn(element) {
+        element.style.transitionDuration = null;
+        element.classList.remove("show");
+        element.classList.add("hide");
+    }
+
+    function resetFadeOut(element) {
+        element.style.transitionDuration = null;
+        element.classList.remove("hide");
+        element.classList.add("show");
+    }
+
+    function resetMoveAndScale(element) {
+        element.style.transitionDuration = null;
+        element.style.transform = null;
+    }
+
     /**
      * Функция, передвигающая элемент
      * @param element — HTMLElement, который надо анимировать
